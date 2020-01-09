@@ -1,5 +1,5 @@
-import { FailureResponse, ErrorResponseClientData } from '../api/types';
 import map from 'lodash/map';
+import { FailureResponse, ErrorResponseClientData } from '../api/types';
 
 export const parseErrorResponse = (response: ErrorResponseClientData): FailureResponse => {
     const message: FailureResponse['message'] = response.data.message || response.statusText;

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { parseErrorResponse } from './helpers';
 import { IS_DEV } from '../constants/settings';
-import { ErrorResponse } from '../actions/types';
+import { ErrorResponseServerData } from '../api/types';
 
 axios.defaults.method = 'get';
 axios.defaults.responseType = 'json';
@@ -11,9 +11,25 @@ const request = <T>(config: AxiosRequestConfig) => {
         .then(function (response) {
             return response.data;
         })
-        .catch(function (error: AxiosError<ErrorResponse>) {
-            throw parseErrorResponse(error.response as ErrorResponse);
+        .catch(function (error: AxiosError<ErrorResponseServerData>) {
+            if (error.response) {
+                throw parseErrorResponse(error.response);
+            }
         });
+};
+
+export const requestGet = <T>(config: AxiosRequestConfig) => {
+    return request<T>({
+        ...config,
+        method: 'get',
+    });
+};
+
+export const requestPost = <T>(config: AxiosRequestConfig) => {
+    return request<T>({
+        ...config,
+        method: 'post',
+    });
 };
 
 if (IS_DEV) {
