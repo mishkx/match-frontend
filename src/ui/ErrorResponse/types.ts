@@ -1,7 +1,6 @@
-import { ErrorData } from '../../api/types';
+import { FailureResponse } from '../../api/types';
 
 export interface ErrorResponseProps {
-    error?: ErrorData;
+    error?: FailureResponse;
     showNotification?: boolean;
 }
-

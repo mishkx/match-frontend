@@ -1,7 +1,8 @@
 import { RouterState } from 'connected-react-router';
-import { ErrorData, ProfileEntity, RecommendedProfileEntity } from '../api/types';
+import { FailureResponse, ChosenProfileEntity, ProfileEntity, RecommendedProfileEntity } from '../api/types';
 
 export interface AppState {
+    latestChoice: LatestChoiceState;
     recommendation: RecommendationState;
     profile: ProfileState;
     router: RouterState;
@@ -9,21 +10,27 @@ export interface AppState {
 
 export interface ProfileState {
     data?: ProfileEntity;
-    error?: ErrorData;
+    error?: FailureResponse;
     isFetching: boolean;
 }
-
-export type RecommendationResultState = RecommendedProfileEntity['id'][];
 
 export interface RecommendationState {
-    entities?: RecommendationEntitiesState;
-    result?: RecommendationResultState;
-    error?: ErrorData;
+    entities: RecommendationEntitiesState;
+    result: RecommendationResultState;
+    error?: FailureResponse;
     isFetching: boolean;
 }
 
-export interface RecommendationEntitiesState {
+export interface LatestChoiceState {
+    data?: ChosenProfileEntity;
+    error?: FailureResponse;
+    isFetching: boolean;
+}
+
+export type RecommendationEntitiesState = {
     profiles: {
         [id: number]: RecommendedProfileEntity
     };
 }
+
+export type RecommendationResultState = RecommendedProfileEntity['id'][];

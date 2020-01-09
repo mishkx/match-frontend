@@ -1,10 +1,9 @@
-import { ErrorResponse } from '../actions/types';
-import { ErrorData } from '../api/types';
+import { FailureResponse, ErrorResponseClientData } from '../api/types';
 import map from 'lodash/map';
 
-export const parseErrorResponse = (response: ErrorResponse): ErrorData => {
-    const message: ErrorData['message'] = response.data.message || response.statusText;
-    let description: ErrorData['description'];
+export const parseErrorResponse = (response: ErrorResponseClientData): FailureResponse => {
+    const message: FailureResponse['message'] = response.data.message || response.statusText;
+    let description: FailureResponse['description'];
 
     switch (response.status) {
         case 403:

@@ -5,14 +5,14 @@ import actions from '../actions/recommendation';
 function* fetchItems() {
     try {
         const data = yield call(api.items);
-        yield put(actions.items.success.setPayload(data).action);
+        yield put(actions.items.success(data));
     } catch (error) {
-        yield put(actions.items.error.setPayload(error).action);
+        yield put(actions.items.failure(error));
     }
 }
 
 function* watchFetchItems() {
-    yield takeEvery(actions.items.request.type, fetchItems);
+    yield takeEvery(actions.items.request, fetchItems);
 }
 
 export default function* root() {

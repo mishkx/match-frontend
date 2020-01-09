@@ -1,40 +1,47 @@
+import { omit, without } from 'lodash';
 import { normalize, schema } from 'normalizr';
+import { createReducer } from 'typesafe-actions';
 import { RecommendationEntitiesState, RecommendationResultState, RecommendationState } from './types';
-import { items } from '../actions/recommendation';
+import { items, remove } from '../actions/recommendation';
 import { RecommendedProfileEntity } from '../api/types';
 
 export const initialState: RecommendationState = {
+    entities: {
+        profiles: {},
+    },
+    result: [],
     isFetching: false,
 };
 
-type ActionType = typeof items.success.action & typeof items.error.action;
-
-export default (state: Readonly<RecommendationState> = initialState, action: ActionType): RecommendationState => {
-    switch (action.type) {
-        case items.request.type:
-            return {
-                ...state,
-                error: undefined,
-                isFetching: true,
-            };
-
-        case items.success.type:
-            return {
-                ...state,
-                ...normalize<RecommendedProfileEntity, RecommendationEntitiesState, RecommendationResultState>(
-                    action.payload,
-                    [new schema.Entity('profiles')]
-                ),
-                isFetching: false,
-            };
-
-        case items.error.type:
-            return {
-                ...state,
-                error: action.payload,
-                isFetching: false,
-            };
-    }
-
-    return state;
-};
+export default createReducer(initialState)
+    .handleAction(remove, (state, action) => {
+        if (!action.payload?.id) {
+            return state;
+        }
+        return {
+            ...state,
+            entities: {
+                ...state.entities,
+                profiles: {...omit(state.entities.profiles, [action.payload.id])}
+            },
+            result: [...without(state.result, action.payload.id)],
+        };
+    })
+    .handleAction(items.success, (state, action) => ({
+        ...state,
+        ...normalize<RecommendedProfileEntity, RecommendationEntitiesState, RecommendationResultState>(
+            action.payload,
+            [new schema.Entity('profiles')]
+        ),
+        isFetching: false,
+    }))
+    .handleAction(items.failure, (state, action) => ({
+        ...state,
+        error: action.payload,
+        isFetching: false,
+    }))
+    .handleAction(items.request, (state, action) => ({
+        ...state,
+        error: undefined,
+        isFetching: true,
+    }));
