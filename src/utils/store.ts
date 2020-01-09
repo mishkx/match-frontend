@@ -1,16 +1,18 @@
 import { routerMiddleware } from 'connected-react-router';
 import { History } from 'history';
-import { applyMiddleware, compose, createStore, Middleware, Store } from 'redux';
+import { applyMiddleware, compose, createStore, Middleware, Store as BaseStore } from 'redux';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 import { IS_DEV } from '../constants/settings';
 import createRootReducer from '../reducers';
+import rootSaga from '../sagas';
+import history from './history';
 
-interface IStore extends Store {
-    runSaga: SagaMiddleware["run"];
+interface Store extends BaseStore {
+    runSaga: SagaMiddleware['run'];
 }
 
-const configureStore = (history: History): IStore => {
+const configureStore = (history: History): Store => {
     const composeEnhancers = (IS_DEV && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
     const sagaMiddleware = createSagaMiddleware();
     const logger = createLogger({
@@ -23,13 +25,10 @@ const configureStore = (history: History): IStore => {
         logger,
     ];
 
-    const store = {
-        ...createStore(
-            createRootReducer(history),
-            composeEnhancers(applyMiddleware(...middlewares)),
-        ),
-        runSaga: sagaMiddleware.run,
-    };
+    const store: Store = createStore(
+        createRootReducer(history),
+        composeEnhancers(applyMiddleware(...middlewares)),
+    );
 
     if (IS_DEV && module.hot) {
         module.hot.accept('../reducers', () => {
@@ -38,7 +37,12 @@ const configureStore = (history: History): IStore => {
         })
     }
 
+    store.runSaga = sagaMiddleware.run;
+
     return store;
 };
 
-export default configureStore;
+const store = configureStore(history);
+store.runSaga(rootSaga);
+
+export default store;
