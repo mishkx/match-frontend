@@ -1,9 +1,24 @@
+import app from './app';
+import chat from './chat';
 import choice from './choice';
-import profile from './profile';
+import match from './match';
 import recommendation from './recommendation';
+import user from './user';
 
-export default {
+export * from './app';
+export * from './chat';
+export * from './choice';
+export * from './match';
+export * from './recommendation';
+export * from './user';
+
+export * from './types';
+
+export {
+    app,
+    chat,
     choice,
-    profile,
+    match,
     recommendation,
+    user,
 };
