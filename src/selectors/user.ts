@@ -1,16 +1,16 @@
 import { Selector, createSelector } from 'reselect';
-import { initialState } from '../reducers/profile';
-import { AppState, ProfileState } from '../reducers/types';
-import { ProfileEntity } from '../api/types';
+import { UserItem } from 'src/api';
+import { AppState, UserState } from 'src/reducers/types';
+import { initialState } from 'src/reducers/user';
 
-export const profileStateSelector: Selector<AppState, ProfileState> = (state) => state.profile || initialState;
+export const userStateSelector: Selector<AppState, UserState> = (state) => state.user || initialState;
 
-export const selectProfileState = createSelector<AppState, ProfileState, ProfileState>(
-    profileStateSelector,
+export const selectUserState = createSelector<AppState, UserState, UserState>(
+    userStateSelector,
     (state) => state,
 );
 
-export const selectProfile = createSelector<AppState, ProfileState, ProfileEntity | null>(
-    selectProfileState,
-    (state) => !state.isFetching && state.data ? state.data : null,
+export const selectUser = createSelector<AppState, UserState, UserItem | undefined>(
+    selectUserState,
+    (state) => !state.isFetching && state.isLoaded && state.data ? state.data : undefined,
 );

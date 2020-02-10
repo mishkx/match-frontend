@@ -1,41 +1,55 @@
-import omit from 'lodash/omit';
-import { createReducer } from 'typesafe-actions';
-import { info, save } from '../actions/profile';
-import { ProfileState } from './types';
+import { createReducer } from '@reduxjs/toolkit';
+import { deleteUserPhoto, getUser, updateUser, userPhotoUploaded } from 'src/actions';
+import { UserState } from './types';
 
-export const initialState: ProfileState = {
+export const initialState: UserState = {
     isFetching: false,
     isLoaded: false,
-    isSaving: false,
+    isUpdating: false,
 };
 
-export default createReducer(initialState)
-    .handleAction([info.success, save.success], (state, action) => ({
+export default createReducer(initialState, (builder) => builder
+    .addCase(getUser.request, (state) => {
+        state.isFetching = true;
+        state.isLoaded = false;
+        delete state.dataError;
+    })
+    .addCase(getUser.success, (state, action) => ({
         ...state,
         data: action.payload,
         isFetching: false,
         isLoaded: true,
-        isSaving: false,
+        isUpdating: false,
     }))
-    .handleAction(info.failure, (state, action) => ({
+    .addCase(getUser.failure, (state, action) => ({
         ...state,
-        infoError: action.payload,
+        dataError: action.payload,
         isFetching: false,
         isLoaded: false,
     }))
-    .handleAction(save.failure, (state, action) => ({
+    .addCase(updateUser.request, (state) => {
+        state.isUpdating = true;
+        delete state.dataError;
+    })
+    .addCase(updateUser.success, (state, action) => ({
         ...state,
-        isSaving: false,
-        saveErrors: action.payload,
+        data: action.payload,
+        isFetching: false,
+        isLoaded: true,
+        isUpdating: false,
     }))
-    .handleAction(save.request, (state) => omit({
+    .addCase(updateUser.failure, (state, action) => ({
         ...state,
-        isSaving: true,
-    }, ['saveErrors']))
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    .handleAction(info.request, (state) => omit({
-        ...state,
-        isFetching: true,
-        isLoaded: false,
-    }, ['infoErrors']));
+        isUpdating: false,
+        updateError: action.payload,
+    }))
+    .addCase(userPhotoUploaded, (state, action) => {
+        state.data?.photos.push(action.payload);
+    })
+    //todo: добавить другие этапы запроса
+    .addCase(deleteUserPhoto.success, (state, action) => {
+        if (state.data) {
+            state.data.photos = action.payload;
+        }
+    }),
+);

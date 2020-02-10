@@ -1,30 +1,31 @@
-import { createAsyncAction } from 'typesafe-actions';
+import { createAction } from '@reduxjs/toolkit';
 import {
-    FailureResponse,
-    ProfileInfoRequest,
-    ProfileInfoResponse,
-    ProfileSaveRequest,
-    ProfileSaveResponse,
-} from '../api/types';
-import { createAsyncActionTypes } from './helpers';
-import { AsyncRequestType } from './types';
+    UserDataRequest,
+    UserDataResponse,
+    UserPhotoDeleteRequest,
+    UserPhotoDeleteResponse,
+    UserPhotoUploaded,
+    UserUpdateRequest,
+    UserUpdateResponse,
+} from 'src/api';
+import { createAsyncAction } from './helpers';
 
-const PROFILE_INFO_GET = createAsyncActionTypes('PROFILE_INFO_GET');
-const PROFILE_SAVE_POST = createAsyncActionTypes('PROFILE_SAVE_POST');
+const USER_DATA_GET = 'USER_DATA_GET';
+const USER_DATA_UPDATE = 'USER_DATA_UPDATE';
+const USER_PHOTO_DELETE = 'USER_PHOTO_DELETE';
+const USER_PHOTO_UPLOADED = 'USER_PHOTO_UPLOADED';
 
-export const info = createAsyncAction(
-    PROFILE_INFO_GET[AsyncRequestType.REQUEST],
-    PROFILE_INFO_GET[AsyncRequestType.SUCCESS],
-    PROFILE_INFO_GET[AsyncRequestType.FAILURE],
-)<ProfileInfoRequest, ProfileInfoResponse, FailureResponse>();
+export const getUser = createAsyncAction<UserDataRequest, UserDataResponse>(USER_DATA_GET);
 
-export const save = createAsyncAction(
-    PROFILE_SAVE_POST[AsyncRequestType.REQUEST],
-    PROFILE_SAVE_POST[AsyncRequestType.SUCCESS],
-    PROFILE_SAVE_POST[AsyncRequestType.FAILURE],
-)<ProfileSaveRequest, ProfileSaveResponse, FailureResponse>();
+export const updateUser = createAsyncAction<UserUpdateRequest, UserUpdateResponse>(USER_DATA_UPDATE);
+
+export const deleteUserPhoto = createAsyncAction<UserPhotoDeleteRequest, UserPhotoDeleteResponse>(USER_PHOTO_DELETE);
+
+export const userPhotoUploaded = createAction<UserPhotoUploaded>(USER_PHOTO_UPLOADED);
 
 export default {
-    info,
-    save,
+    deleteUserPhoto,
+    getUser,
+    updateUser,
+    userPhotoUploaded,
 };
