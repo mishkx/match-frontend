@@ -1,10 +1,10 @@
-import React  from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from './root';
-import * as serviceWorker from './serviceWorker';
+import Root from 'src/root';
+import 'moment/locale/ru';
+import './i18n';
 
-const ROOT_NODE = document.getElementById('root') as HTMLElement;
+const ROOT_ELEMENT_ID = 'root';
+const ROOT_NODE = document.getElementById(ROOT_ELEMENT_ID) as HTMLElement;
 
 ReactDOM.render(<Root/>, ROOT_NODE);
-
-serviceWorker.unregister();

@@ -1,19 +1,18 @@
-import { hot } from 'react-hot-loader/root';
 import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
+import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
-import { IS_DEV } from './constants/settings';
-import App from './ui/App';
-import history from './utils/history';
-import store from './utils/store';
-import routes from './routes';
+import { IS_DEV } from 'src/constants';
+import { AppContainer } from 'src/containers';
+import routes from 'src/routes';
+import { history, store } from 'src/utils';
 
 const Root: React.FC = () => (
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <App>
+            <AppContainer>
                 {routes}
-            </App>
+            </AppContainer>
         </ConnectedRouter>
     </Provider>
 );
