@@ -1,0 +1,163 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "react-app",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "rules": {
+    "no-debugger": "warn",
+    "no-console": "warn",
+    "no-underscore-dangle": "warn",
+    "no-extra-semi": "warn",
+    "eol-last": "warn",
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "jsx-quotes": [
+      "warn",
+      "prefer-single"
+    ],
+    "constructor-super": "warn",
+    "for-direction": "warn",
+    "no-async-promise-executor": "warn",
+    "no-case-declarations": "warn",
+    "no-class-assign": "warn",
+    "no-compare-neg-zero": "warn",
+    "no-constant-condition": "warn",
+    "no-empty": "warn",
+    "no-extra-boolean-cast": "warn",
+    "no-global-assign": "warn",
+    "no-inner-declarations": "warn",
+    "no-irregular-whitespace": "warn",
+    "no-misleading-character-class": "warn",
+    "no-mixed-spaces-and-tabs": "warn",
+    "no-prototype-builtins": "warn",
+    "no-unexpected-multiline": "warn",
+    "no-unsafe-finally": "warn",
+    "no-unsafe-negation": "warn",
+    "no-useless-catch": "warn",
+    "arrow-parens": [
+      "off",
+      "as-needed"
+    ],
+    "camelcase": "warn",
+    "comma-dangle": [
+      "warn",
+      "always-multiline"
+    ],
+    "complexity": "off",
+    "curly": [
+      "warn",
+      "multi-line"
+    ],
+    "dot-notation": "warn",
+    "guard-for-in": "warn",
+    "id-blacklist": [
+      "warn",
+      "any",
+      "Number",
+      "number",
+      "String",
+      "string",
+      "Boolean",
+      "boolean",
+      "Undefined"
+    ],
+    "id-match": "warn",
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "never"
+      }
+    ],
+    "max-classes-per-file": [
+      "warn",
+      1
+    ],
+    "max-len": [
+      "warn",
+      {
+        "ignorePattern": "^import",
+        "code": 120
+      }
+    ],
+    "no-bitwise": "warn",
+    "no-duplicate-imports": "warn",
+    "no-invalid-this": "off",
+    "no-multiple-empty-lines": "warn",
+    "no-plusplus": "warn",
+    "no-shadow": [
+      "warn",
+      {
+        "hoist": "all"
+      }
+    ],
+    "no-trailing-spaces": "warn",
+    "no-undef-init": "warn",
+    "no-var": "warn",
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "object-shorthand": "warn",
+    "one-var": [
+      "warn",
+      "never"
+    ],
+    "prefer-arrow-callback": "warn",
+    "prefer-const": "warn",
+    "prefer-template": "warn",
+    "quote-props": [
+      "warn",
+      "as-needed"
+    ],
+    "radix": "warn",
+    "react/no-children-prop": "off",
+    "react/prop-types": "off",
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreDeclarationSort": true
+      }
+    ],
+    "sort-keys": [
+      "warn",
+      "asc",
+      {
+        "natural": true
+      }
+    ],
+    "space-before-function-paren": [
+      "warn",
+      {
+        "anonymous": "always",
+        "named": "never"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts?(x)"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/member-ordering": "warn",
+        "@typescript-eslint/no-empty-interface": "off"
+      }
+    }
+  ]
+}
