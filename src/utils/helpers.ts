@@ -1,5 +1,7 @@
 import map from 'lodash/map';
-import { ErrorResponseClientData, FailureResponse } from 'src/api';
+import { MomentFormatSpecification, MomentInput } from 'moment';
+import { ChatMessageCombined, ChatMessageSendingItem, ErrorResponseClientData, FailureResponse } from 'src/api';
+import moment from './moment';
 
 export const parseErrorResponse = (response: ErrorResponseClientData): FailureResponse => {
     const message: FailureResponse['message'] = response.data.message || response.statusText;
@@ -38,3 +40,22 @@ type XsrfTokenHeader = {
 export const xsrfTokenHeader = (): XsrfTokenHeader => ({
     'X-CSRF-TOKEN': xsrfToken(),
 });
+
+export const getRelativeDateTime = (inp: MomentInput, format: MomentFormatSpecification): string => {
+    const momentObject = moment(inp, format).local();
+    let toFormat;
+    if (momentObject.isSame(moment(), 'day')) {
+        toFormat = 'LT';
+    } else if (momentObject.isAfter(moment().startOf('week'))) {
+        toFormat = 'ddd';
+    } else {
+        toFormat = 'L';
+    }
+    return momentObject.format(toFormat);
+};
+
+export const isSendingMessage = (
+    message: ChatMessageCombined,
+): message is ChatMessageSendingItem => {
+    return (message as ChatMessageSendingItem).isSending !== undefined;
+};
