@@ -1,6 +1,7 @@
+import omit from 'lodash/omit';
 import { createReducer } from 'typesafe-actions';
+import { dislike, like, removeLatest } from '../actions/choice';
 import { LatestChoiceState } from './types';
-import { like, dislike, removeLatest } from '../actions/choice';
 
 export const initialState: LatestChoiceState = {
     isFetching: false,
@@ -17,13 +18,11 @@ export default createReducer(initialState)
         error: action.payload,
         isFetching: false,
     }))
-    .handleAction([like.request, dislike.request], (state, action) => ({
+    .handleAction([like.request, dislike.request], (state) => omit({
         ...state,
-        error: undefined,
         isFetching: true,
-    }))
-    .handleAction(removeLatest, (state) => ({
+    }, 'error'))
+    .handleAction(removeLatest, (state) => omit({
         ...state,
-        data: undefined,
         isFetching: false,
-    }));
+    }, 'data'));
