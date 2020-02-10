@@ -1,8 +1,9 @@
 import map from 'lodash/map';
-import { FailureResponse, ErrorResponseClientData } from '../api/types';
+import { ErrorResponseClientData, FailureResponse } from 'src/api';
 
 export const parseErrorResponse = (response: ErrorResponseClientData): FailureResponse => {
     const message: FailureResponse['message'] = response.data.message || response.statusText;
+    const newLine = ' \n';
     let description: FailureResponse['description'];
 
     switch (response.status) {
@@ -12,7 +13,7 @@ export const parseErrorResponse = (response: ErrorResponseClientData): FailureRe
             break;
 
         case 422:
-            description = map(response.data.errors, item => item.join(" \n")).join(" \n");
+            description = map(response.data.error, item => item.join(newLine)).join(newLine);
             break;
 
         default:
@@ -20,8 +21,8 @@ export const parseErrorResponse = (response: ErrorResponseClientData): FailureRe
     }
 
     return {
-        status: response.status,
-        message,
         description,
+        message,
+        status: response.status,
     };
 };
