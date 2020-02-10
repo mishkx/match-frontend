@@ -26,3 +26,15 @@ export const parseErrorResponse = (response: ErrorResponseClientData): FailureRe
         status: response.status,
     };
 };
+
+export const xsrfToken = (): string => {
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+};
+
+type XsrfTokenHeader = {
+    'X-CSRF-TOKEN': string;
+};
+
+export const xsrfTokenHeader = (): XsrfTokenHeader => ({
+    'X-CSRF-TOKEN': xsrfToken(),
+});
