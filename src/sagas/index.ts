@@ -1,12 +1,18 @@
 import { all, fork } from 'redux-saga/effects';
+import chat from './chat';
 import choice from './choice';
-import profile from './profile';
+import config from './config';
+import match from './match';
 import recommendation from './recommendation';
+import user from './user';
 
 export default function* root() {
     yield all([
+        fork(chat),
         fork(choice),
-        fork(profile),
+        fork(config),
+        fork(match),
         fork(recommendation),
+        fork(user),
     ]);
 }
