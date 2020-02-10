@@ -1,20 +1,20 @@
-import { fork, put, call, takeEvery } from 'redux-saga/effects';
-import api from '../api/recommendation';
-import actions from '../actions/recommendation';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { getRecommendationCollection } from 'src/actions';
+import api, { RecommendationCollectionResponse } from 'src/api/recommendation';
 
-function* fetchItems() {
+function* handleGetRecommendationsCollection() {
     try {
-        const data = yield call(api.items);
-        yield put(actions.items.success(data));
+        const data: RecommendationCollectionResponse = yield call(api.items);
+        yield put(getRecommendationCollection.success(data));
     } catch (error) {
-        yield put(actions.items.failure(error));
+        yield put(getRecommendationCollection.failure(error));
     }
 }
 
-function* watchFetchItems() {
-    yield takeEvery(actions.items.request, fetchItems);
+function* watchGetRecommendationsCollection() {
+    yield takeEvery(getRecommendationCollection.request, handleGetRecommendationsCollection);
 }
 
 export default function* root() {
-    yield fork(watchFetchItems);
+    yield fork(watchGetRecommendationsCollection);
 }

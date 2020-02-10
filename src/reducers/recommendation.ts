@@ -1,47 +1,41 @@
-import { omit, without } from 'lodash';
-import { normalize, schema } from 'normalizr';
-import { createReducer } from 'typesafe-actions';
+import { assign, omit, union, without } from 'lodash';
+import { normalize } from 'normalizr';
+import { createReducer } from '@reduxjs/toolkit';
+import { deleteRecommendation, getRecommendationCollection } from 'src/actions';
+import { RecommendedUserItem } from 'src/api';
+import { RECOMMENDATION_MIN_ITEMS } from 'src/constants';
+import { RecommendationSchema } from 'src/schemas';
 import { RecommendationEntitiesState, RecommendationResultState, RecommendationState } from './types';
-import { items, remove } from '../actions/recommendation';
-import { RecommendedProfileEntity } from '../api/types';
 
 export const initialState: RecommendationState = {
     entities: {
-        profiles: {},
+        users: {},
     },
-    result: [],
+    hasMoreItems: true,
     isFetching: false,
+    result: [],
 };
 
-export default createReducer(initialState)
-    .handleAction(remove, (state, action) => {
-        if (!action.payload?.id) {
-            return state;
-        }
-        return {
-            ...state,
-            entities: {
-                ...state.entities,
-                profiles: {...omit(state.entities.profiles, [action.payload.id])}
-            },
-            result: [...without(state.result, action.payload.id)],
-        };
+export default createReducer(initialState, (builder) => builder
+    .addCase(deleteRecommendation, (state, action) => {
+        state.entities.users = omit(state.entities.users, action.payload.id);
+        state.result = without(state.result, action.payload.id);
     })
-    .handleAction(items.success, (state, action) => ({
-        ...state,
-        ...normalize<RecommendedProfileEntity, RecommendationEntitiesState, RecommendationResultState>(
-            action.payload,
-            [new schema.Entity('profiles')]
-        ),
-        isFetching: false,
-    }))
-    .handleAction(items.failure, (state, action) => ({
-        ...state,
-        error: action.payload,
-        isFetching: false,
-    }))
-    .handleAction(items.request, (state, action) => ({
-        ...state,
-        error: undefined,
-        isFetching: true,
-    }));
+    .addCase(getRecommendationCollection.request, (state) => {
+        state.isFetching = true;
+        delete state.error;
+    })
+    .addCase(getRecommendationCollection.success, (state, action) => {
+        const data = normalize<RecommendedUserItem, RecommendationEntitiesState, RecommendationResultState>(
+            action.payload, [RecommendationSchema],
+        );
+        state.entities.users = assign(state.entities.users, data.entities.users);
+        state.result = union(state.result, data.result);
+        state.hasMoreItems = data.result.length >= RECOMMENDATION_MIN_ITEMS;
+        state.isFetching = false;
+    })
+    .addCase(getRecommendationCollection.failure, (state, action) => {
+        state.isFetching = false;
+        state.error = action.payload;
+    }),
+);

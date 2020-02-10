@@ -1,21 +1,20 @@
-import { createAsyncActionTypes } from './helpers';
-import { ChoiceRequest, FailureResponse, RecommendationItemsRequest, RecommendationItemsResponse } from '../api/types';
-import { AsyncRequestType } from './types';
+import { createAction } from '@reduxjs/toolkit';
+import {
+    IdentifyType,
+    RecommendationCollectionRequest,
+    RecommendationCollectionResponse,
+} from 'src/api';
+import { createAsyncAction } from './helpers';
 
-import { createAction, createAsyncAction } from 'typesafe-actions';
+const RECOMMENDATION_COLLECTION_GET = 'RECOMMENDATION_COLLECTION_GET';
+const RECOMMENDATION_DELETE = 'RECOMMENDATION_DELETE';
 
-const GET_RECOMMENDATION_ITEMS = createAsyncActionTypes('GET_RECOMMENDATION_ITEMS');
-const REMOVE_RECOMMENDATION = 'REMOVE_RECOMMENDATION';
+export const getRecommendationCollection = createAsyncAction<RecommendationCollectionRequest,
+    RecommendationCollectionResponse>(RECOMMENDATION_COLLECTION_GET);
 
-export const items = createAsyncAction(
-    GET_RECOMMENDATION_ITEMS[AsyncRequestType.REQUEST],
-    GET_RECOMMENDATION_ITEMS[AsyncRequestType.SUCCESS],
-    GET_RECOMMENDATION_ITEMS[AsyncRequestType.FAILURE],
-)<RecommendationItemsRequest, RecommendationItemsResponse, FailureResponse>();
-
-export const remove = createAction(REMOVE_RECOMMENDATION, (response: ChoiceRequest) => response)();
+export const deleteRecommendation = createAction(RECOMMENDATION_DELETE, (payload: IdentifyType) => ({ payload }));
 
 export default {
-    remove,
-    items,
-}
+    deleteRecommendation,
+    getRecommendationCollection,
+};
