@@ -1,28 +1,38 @@
-import omit from 'lodash/omit';
-import { createReducer } from 'typesafe-actions';
-import { dislike, like, removeLatest } from '../actions/choice';
-import { LatestChoiceState } from './types';
+import { createReducer } from '@reduxjs/toolkit';
+import { deleteLastChoice, dislike, like } from 'src/actions';
+import { LastChoiceState } from './types';
 
-export const initialState: LatestChoiceState = {
+export const initialState: LastChoiceState = {
     isFetching: false,
 };
 
-export default createReducer(initialState)
-    .handleAction([like.success, dislike.success], (state, action) => ({
-        ...state,
-        data: action.payload,
-        isFetching: false,
-    }))
-    .handleAction([like.failure, dislike.failure], (state, action) => ({
-        ...state,
-        error: action.payload,
-        isFetching: false,
-    }))
-    .handleAction([like.request, dislike.request], (state) => omit({
-        ...state,
-        isFetching: true,
-    }, 'error'))
-    .handleAction(removeLatest, (state) => omit({
-        ...state,
-        isFetching: false,
-    }, 'data'));
+//todo: хранить все выборы, а не только последний
+export default createReducer(initialState, (builder) => builder
+    .addCase(dislike.request, (state) => {
+        state.isFetching = true;
+        delete state.error;
+    })
+    .addCase(dislike.success, (state, action) => {
+        state.isFetching = false;
+        state.data = action.payload;
+    })
+    .addCase(dislike.failure, (state, action) => {
+        state.isFetching = false;
+        state.error = action.payload;
+    })
+    .addCase(like.request, (state) => {
+        state.isFetching = true;
+        delete state.error;
+    })
+    .addCase(like.success, (state, action) => {
+        state.isFetching = false;
+        state.data = action.payload;
+    })
+    .addCase(like.failure, (state, action) => {
+        state.isFetching = false;
+        state.error = action.payload;
+    })
+    .addCase(deleteLastChoice, (state) => {
+        delete state.data;
+    }),
+);

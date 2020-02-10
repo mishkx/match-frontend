@@ -1,5 +1,5 @@
-import { requestPost } from '../utils/request';
-import { URL_CHOICE_DISLIKE, URL_CHOICE_LIKE } from '../constants/urls';
+import { URL_CHOICE_DISLIKE, URL_CHOICE_LIKE } from 'src/constants';
+import { postRequest } from 'src/utils';
 import {
     ChoiceDislikeRequest,
     ChoiceDislikeResponse,
@@ -7,17 +7,15 @@ import {
     ChoiceLikeResponse,
 } from './types';
 
-export const like = (data: ChoiceLikeRequest) => (
-    requestPost<ChoiceLikeResponse>({
-        data,
-        url: URL_CHOICE_LIKE,
+export const dislike = (payload: ChoiceDislikeRequest) => (
+    postRequest<ChoiceDislikeResponse>({
+        url: URL_CHOICE_DISLIKE(payload.id),
     })
 );
 
-export const dislike = (data: ChoiceDislikeRequest) => (
-    requestPost<ChoiceDislikeResponse>({
-        data,
-        url: URL_CHOICE_DISLIKE,
+export const like = (payload: ChoiceLikeRequest) => (
+    postRequest<ChoiceLikeResponse>({
+        url: URL_CHOICE_LIKE(payload.id),
     })
 );
 

@@ -1,34 +1,24 @@
-import { createAction, createAsyncAction } from 'typesafe-actions';
-import { createAsyncActionTypes } from './helpers';
+import { createAction } from '@reduxjs/toolkit';
 import {
     ChoiceDislikeRequest,
     ChoiceDislikeResponse,
     ChoiceLikeRequest,
     ChoiceLikeResponse,
-    FailureResponse,
-} from '../api/types';
-import { AsyncRequestType } from './types';
+} from 'src/api';
+import { createAsyncAction } from './helpers';
 
-const CHOICE_LIKE = createAsyncActionTypes('CHOICE_LIKE');
-const CHOICE_DISLIKE = createAsyncActionTypes('CHOICE_DISLIKE');
-const REMOVE_LATEST_CHOICE = 'REMOVE_LATEST_CHOICE';
+const CHOICE_DELETE_LAST = 'CHOICE_DELETE_LAST';
+const CHOICE_DISLIKE = 'CHOICE_DISLIKE';
+const CHOICE_LIKE = 'CHOICE_LIKE';
 
-export const like = createAsyncAction(
-    CHOICE_LIKE[AsyncRequestType.REQUEST],
-    CHOICE_LIKE[AsyncRequestType.SUCCESS],
-    CHOICE_LIKE[AsyncRequestType.FAILURE],
-)<ChoiceLikeRequest, ChoiceLikeResponse, FailureResponse>();
+export const deleteLastChoice = createAction(CHOICE_DELETE_LAST);
 
-export const dislike = createAsyncAction(
-    CHOICE_DISLIKE[AsyncRequestType.REQUEST],
-    CHOICE_DISLIKE[AsyncRequestType.SUCCESS],
-    CHOICE_DISLIKE[AsyncRequestType.FAILURE],
-)<ChoiceDislikeRequest, ChoiceDislikeResponse, FailureResponse>();
+export const dislike = createAsyncAction<ChoiceDislikeRequest, ChoiceDislikeResponse>(CHOICE_DISLIKE);
 
-export const removeLatest = createAction(REMOVE_LATEST_CHOICE)();
+export const like = createAsyncAction<ChoiceLikeRequest, ChoiceLikeResponse>(CHOICE_LIKE);
 
 export default {
-    like,
+    deleteLastChoice,
     dislike,
-    removeLatest,
-}
+    like,
+};

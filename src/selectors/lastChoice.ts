@@ -1,17 +1,17 @@
 import { Selector, createSelector } from 'reselect';
-import { initialState } from '../reducers/latestChoice';
-import { AppState, LatestChoiceState } from '../reducers/types';
+import { initialState } from 'src/reducers/lastChoice';
+import { AppState, LastChoiceState } from 'src/reducers/types';
 
-export const latestChoiceStateSelector: Selector<AppState, LatestChoiceState> = (state) => {
-    return state.latestChoice || initialState;
+export const lastChoiceStateSelector: Selector<AppState, LastChoiceState> = (state) => {
+    return state.lastChoice || initialState;
 };
 
-export const selectLatestChoiceState = createSelector(
-    latestChoiceStateSelector,
+export const selectLastChoiceState = createSelector(
+    lastChoiceStateSelector,
     (state) => state,
 );
 
 export const selectMatchedUser = createSelector(
-    latestChoiceStateSelector,
+    lastChoiceStateSelector,
     (state) => !state.isFetching && state.data?.isMatched ? state.data : null,
 );
