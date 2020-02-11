@@ -43,7 +43,7 @@ const SingleChatContainer: React.FC<SingleChatContainerProps> = (props) => {
         return isSendingMessage(value) ? value.sentAt : value.createdAt;
     }, 'desc');
 
-    const lastMessage = findLast<ChatMessageCombined>(allMessages, (value) => !isSendingMessage(value));
+    const lastMessage = findLast<ChatMessageCombined>(messages, (value) => !isSendingMessage(value));
     const lastMessageId = (lastMessage as ChatMessageItem)?.id;
 
     const handleLoadMore = () => loadMoreItems(idParam, lastMessageId);

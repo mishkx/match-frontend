@@ -30,7 +30,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = (props) => {
                 hasMore={props.hasMore}
                 loadMore={props.handleLoadMore}
                 useWindow={props.useWindow}
-                isReverse={props.useWindow}
+                isReverse={props.isReverse}
             >
                 <Styled.ChatReversedList>
                     <List
