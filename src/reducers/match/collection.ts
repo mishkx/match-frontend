@@ -1,7 +1,7 @@
 import { assign, union, without } from 'lodash';
 import { normalize } from 'normalizr';
 import { createReducer } from '@reduxjs/toolkit';
-import { deleteSingleMatch, getMatchCollection, matchCreated, matchDeleted, receiveMessage } from 'src/actions';
+import { deleteSingleMatch, getMatchCollection, matchCreated, matchDeleted, receiveMessage, sendMessage } from 'src/actions';
 import { MatchCollectionUserItem } from 'src/api';
 import { MatchSchema } from 'src/schemas';
 import { MatchCollectionState, MatchEntitiesState, MatchResultState } from '../types';
@@ -58,6 +58,9 @@ export default createReducer(initialState, (builder) => builder
     })
     .addCase(matchDeleted, (state, action) => {
         deleteMatch(state, action.payload.id);
+    })
+    .addCase(sendMessage.success, (state, action) => {
+        deleteMatch(state, action.meta.id);
     })
     .addCase(receiveMessage, (state, action) => {
         deleteMatch(state, action.payload.user.id);
