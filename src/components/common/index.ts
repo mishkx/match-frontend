@@ -13,6 +13,7 @@ import Result from './Result';
 import Slider from './Slider';
 import Spin from './Spin';
 import TextArea from './TextArea';
+import Title from './Title';
 import {
     DatePickerField,
     FieldWrapper,
@@ -49,5 +50,6 @@ export {
     SliderField,
     TextAreaField,
     TextArea,
+    Title,
     FieldWrapper,
 }
