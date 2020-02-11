@@ -3,6 +3,7 @@ import { FieldProps } from 'formik';
 export type ComponentProps<T> = T & {
     name: string;
     type: string;
+    label?: string;
     hasFeedback?: boolean;
 };
 

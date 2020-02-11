@@ -6,12 +6,12 @@ import { withFormFieldValues } from './index';
 
 function withFormFieldValuesWrapper<T>(Component: React.ComponentType<T>): React.FC<ComponentValueProps<T>> {
     const Result: React.FC<ComponentValueProps<T>> = (props) => {
-        const { field, form, children, hasFeedback } = props;
+        const { field, form, label, hasFeedback } = props;
 
         return (
             <FieldWrapper
                 hasFeedback={hasFeedback}
-                label={children as string}
+                label={label}
                 error={form.errors[field.name] as string}
                 isSubmitted={form.submitCount > 0}
                 isTouched={!!form.touched[field.name]}

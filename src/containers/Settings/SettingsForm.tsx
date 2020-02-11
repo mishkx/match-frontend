@@ -14,7 +14,9 @@ import {
     InputField,
     RadioButtonField,
     RadioGroup,
-    SliderField, Spin,
+    SliderField,
+    Spin,
+    Title,
 } from 'src/components/common';
 import { ButtonWrapper } from 'src/components/kit';
 import {
@@ -32,6 +34,7 @@ Yup.addMethod<Yup.DateSchema>(Yup.date, 'format', (format: string) => {
     });
 });
 
+// todo: разбить на компоненты
 const SettingsForm: React.FC<SettingsFormProps> = (props) => {
     const { user, t } = props;
     const dispatch = useDispatch();
@@ -63,8 +66,7 @@ const SettingsForm: React.FC<SettingsFormProps> = (props) => {
             .nullable(true)
             .required(t('Required')),
         description: Yup.string()
-            .max(config.userMaxDescriptionLength)
-            .required(t('Required')),
+            .max(config.userMaxDescriptionLength),
         gender: Yup.mixed()
             .oneOf([
                 config.userGenderFemale,
@@ -117,10 +119,12 @@ const SettingsForm: React.FC<SettingsFormProps> = (props) => {
                 const isSubmitted = formProps.submitCount > 0;
                 return (
                 <Form>
+                    <Title level={4}>{t('Account')}</Title>
                     <InputField
                         allowClear={true}
                         name={'name'}
                         type={'text'}
+                        label={t('Name')}
                     />
                     <FieldWrapper
                         error={formProps.errors.gender}
@@ -156,13 +160,16 @@ const SettingsForm: React.FC<SettingsFormProps> = (props) => {
                         name={'bornOn'}
                         showTime={false}
                         type={'text'}
+                        label={t('Birth date')}
                     />
                     <InputField
                         allowClear={true}
                         name={'description'}
                         type={'text'}
+                        label={t('About')}
                     />
 
+                    <Title level={4}>{t('Discovery')}</Title>
                     <FieldWrapper
                         error={formProps.errors.preferredGender}
                         hasFeedback={false}
@@ -192,7 +199,7 @@ const SettingsForm: React.FC<SettingsFormProps> = (props) => {
                     </FieldWrapper>
                     <SliderField
                         hasFeedback={false}
-                        children={t('Age')}
+                        label={t('Age')}
                         max={config.userMaxAge}
                         min={config.userMinAge}
                         name={'preferredAge'}
@@ -201,7 +208,7 @@ const SettingsForm: React.FC<SettingsFormProps> = (props) => {
                     />
                     <SliderField
                         hasFeedback={false}
-                        children={t('Distance')}
+                        label={t('Distance')}
                         max={config.userMaxDistance}
                         min={config.userMinDistance}
                         name={'preferredMaxDistance'}

@@ -1,11 +1,15 @@
 const en = {
     translation: {
         '{{distance}} km from you': '{{distance}} km from you',
+        About: 'About',
+        Account: 'Account',
         'Add photo': 'Add photo',
         Age: 'Age',
         'Are you sure?': 'Are you sure?',
+        'Birth date': 'Birth date',
         Contact: 'Contact',
         'Delete match': 'Delete match',
+        Discovery: 'Discovery',
         Distance: 'Distance',
         Female: 'Female',
         'Go to recommendations': 'Go to recommendations',
@@ -13,6 +17,7 @@ const en = {
         'It\'s a match!': 'It\'s a match!',
         'Keep searching': 'Keep searching',
         Male: 'Male',
+        Name: 'Name',
         'Page not found': 'Page not found',
         Photos: 'Photos',
         Required: 'Required',
