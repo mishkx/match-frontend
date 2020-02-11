@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { ErrorResponseServerData } from 'src/api';
-import { IS_DEV } from 'src/constants';
 import { parseErrorResponse } from './helpers';
 
 axios.defaults.method = 'get';
