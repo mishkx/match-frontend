@@ -1,5 +1,6 @@
-import { forIn, isArray, union, without } from 'lodash';
+import { forEach, forIn, isArray, union, without } from 'lodash';
 import { NormalizedSchema } from 'normalizr';
+import { ChatMessageReceivedItem } from 'src/api/chat';
 import { SchemaResultState } from '../types';
 import { ChatListEntitiesState, ChatState } from './types';
 
@@ -24,6 +25,12 @@ export const combineEntitiesState = (
             hasMoreItems: value.messages.length > 0,
             isFetching: false,
         };
+    });
+};
+
+export const markMessagesAsRead = (state: ChatState, ids: number[]): void => {
+    forEach(ids, (id) => {
+        delete (state.entities.messages[id] as ChatMessageReceivedItem).isReceived;
     });
 };
 

@@ -1,4 +1,4 @@
-import { omit, union, without } from 'lodash';
+import { mapValues, omit, union, without } from 'lodash';
 import { normalize } from 'normalizr';
 import { createReducer } from '@reduxjs/toolkit';
 import {
@@ -8,12 +8,13 @@ import {
     matchDeleted,
     receiveMessage,
     sendMessage,
+    sendPresence,
 } from 'src/actions';
-import { ChatItem } from 'src/api';
+import { ChatItem, ChatItemReceived } from 'src/api';
 import { ChatSchema } from 'src/schemas';
 import { SchemaResultState } from '../types';
 import { ChatListEntitiesState, ChatState } from './types';
-import { combineEntitiesState, deleteChat } from './helpers';
+import { combineEntitiesState, deleteChat, markMessagesAsRead } from './helpers';
 
 export const initialState: ChatState = {
     entities: {
@@ -87,10 +88,20 @@ export default createReducer(initialState, (builder) => builder
         state.entities.sendingMessages = omit(state.entities.sendingMessages, action.payload.token);
     })
     .addCase(receiveMessage, (state, action) => {
-        const data = normalize<ChatItem, ChatListEntitiesState, SchemaResultState<string>>(
+        const data = normalize<ChatItemReceived, ChatListEntitiesState, SchemaResultState<string>>(
             action.payload, ChatSchema,
         );
+        data.entities.messages = mapValues(data.entities.messages, (message) => ({
+            ...message,
+            isReceived: true,
+        }));
         combineEntitiesState(state, data);
+    })
+    .addCase(sendPresence.request, (state, action) => {
+        markMessagesAsRead(state, action.payload.messageIds);
+    })
+    .addCase(sendPresence.success, (state, action) => {
+        state.entities.items[action.meta.id].unreadCount = 0;
     })
     .addCase(deleteSingleMatch.success, (state, action) => {
         deleteChat(state, action.payload.id);

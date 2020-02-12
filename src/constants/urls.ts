@@ -6,6 +6,8 @@ export const URL_CHAT_SINGLE = (id: number) => `${URL_CHAT}/${id}`;
 
 export const URL_CHAT_SEND_MESSAGE = (id: number) => `${URL_CHAT}/${id}/message`;
 
+export const URL_CHAT_SEND_PRESENCE = (id: number) => `${URL_CHAT}/${id}/presence`;
+
 export const URL_CHOICE_DISLIKE = (id: number) => `/api/v1/choice/${id}/dislike`;
 
 export const URL_CHOICE_LIKE = (id: number) => `/api/v1/choice/${id}/like`;

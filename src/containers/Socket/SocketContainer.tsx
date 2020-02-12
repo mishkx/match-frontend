@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { matchCreated, matchDeleted, receiveMessage } from 'src/actions';
-import { ChatItem, IdentifyType, MatchCollectionUserItem } from 'src/api';
+import { ChatItemReceived, IdentifyType, MatchCollectionUserItem } from 'src/api';
 import { Socket, SocketBroadcaster, SocketEventType, SocketOptions } from 'src/utils';
 
 type SocketContainerProps = {
@@ -16,7 +16,7 @@ export const SocketContainer: React.FC<SocketContainerProps> = ({ broadcaster, o
 
     useEffect(() => {
         socket.joinUserChannel(userId)
-            .listen(SocketEventType.ChatMessageCreated, (message: ChatItem) => {
+            .listen(SocketEventType.ChatMessageCreated, (message: ChatItemReceived) => {
                 dispatch(receiveMessage(message));
             })
             .listen(SocketEventType.MatchCreated, (match: MatchCollectionUserItem) => {

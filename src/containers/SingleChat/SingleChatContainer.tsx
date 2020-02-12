@@ -1,9 +1,15 @@
-import { findLast, orderBy, union, values } from 'lodash';
+import { filter, findLast, map, orderBy, union, values } from 'lodash';
 import { denormalize } from 'normalizr';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChatSingleItem } from 'src/actions';
-import { ChatItem, ChatMessageCombined, ChatMessageItem, ChatMessageSendingItem } from 'src/api/chat';
+import { getChatSingleItem, sendPresence } from 'src/actions';
+import {
+    ChatItem,
+    ChatMessageCombined,
+    ChatMessageItem,
+    ChatMessageReceivedItem,
+    ChatMessageSendingItem,
+} from 'src/api/chat';
 import { Spin } from 'src/components/common';
 import { ChatMessages, ChatNavBar, ChatWrapper } from 'src/components/kit';
 import { ChatSchema } from 'src/schemas';
@@ -44,7 +50,17 @@ const SingleChatContainer: React.FC<SingleChatContainerProps> = (props) => {
     }, 'desc');
 
     const lastMessage = findLast<ChatMessageCombined>(messages, (value) => !isSendingMessage(value));
+    const receivedMessages = filter<ChatMessageCombined>(messages, (value) => {
+        return (value as ChatMessageReceivedItem).isReceived;
+    }) as ChatMessageReceivedItem[];
     const lastMessageId = (lastMessage as ChatMessageItem)?.id;
+
+    if (receivedMessages.length) {
+        dispatch(sendPresence.request({
+            id: item.user.id,
+            messageIds: map(receivedMessages, message => message.id),
+        }))
+    }
 
     const handleLoadMore = () => loadMoreItems(idParam, lastMessageId);
 

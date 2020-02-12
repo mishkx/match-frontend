@@ -1,5 +1,7 @@
 import {
-    ChatMessageItem, ChatMessageSendingItem,
+    ChatMessageItem,
+    ChatMessageReceivedItem,
+    ChatMessageSendingItem,
     ChatUserItem,
     FailureResponse,
 } from 'src/api';
@@ -17,7 +19,7 @@ export type ChatListEntitiesState = {
         [id: number]: ChatListEntityData;
     };
     messages: {
-        [id: number]: ChatMessageItem;
+        [id: number]: ChatMessageItem | ChatMessageReceivedItem;
     };
     sendingMessages: {
         [token: string]: ChatMessageSendingItem;

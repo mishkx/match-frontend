@@ -1,6 +1,6 @@
-import { List } from 'antd';
 import React, { memo } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { List } from 'antd';
 import { ChatMessageCombined } from 'src/api';
 import * as Styled from './styles';
 import { ChatMessage } from './index';

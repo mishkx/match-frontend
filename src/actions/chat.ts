@@ -2,9 +2,11 @@ import { createAction } from '@reduxjs/toolkit';
 import {
     ChatCollectionRequest,
     ChatCollectionResponse,
-    ChatItem,
+    ChatItemReceived,
     ChatSendMessageRequest,
     ChatSendMessageResponse,
+    ChatSendPresenceRequest,
+    ChatSendPresenceResponse,
     ChatSingleRequest,
     ChatSingleResponse,
 } from 'src/api';
@@ -15,14 +17,18 @@ const CHAT_MESSAGE_RECEIVE = 'CHAT_MESSAGE_RECEIVE';
 const CHAT_MESSAGE_SEND = 'CHAT_MESSAGE_SEND';
 const CHAT_MESSAGE_TYPE = 'CHAT_MESSAGE_TYPE';
 const CHAT_SINGLE_GET = 'CHAT_SINGLE_GET';
+const CHAT_SINGLE_PRESENCE = 'CHAT_SINGLE_PRESENCE';
 
 export const getChatCollection = createAsyncAction<ChatCollectionRequest,
     ChatCollectionResponse>(CHAT_COLLECTION_GET);
 
-export const receiveMessage = createAction<ChatItem>(CHAT_MESSAGE_RECEIVE);
+export const receiveMessage = createAction<ChatItemReceived>(CHAT_MESSAGE_RECEIVE);
 
 export const sendMessage = createAsyncActionWithMeta<ChatSendMessageRequest,
     ChatSendMessageResponse>(CHAT_MESSAGE_SEND);
+
+export const sendPresence = createAsyncActionWithMeta<ChatSendPresenceRequest,
+    ChatSendPresenceResponse>(CHAT_SINGLE_PRESENCE);
 
 export const getChatSingleItem = createAsyncActionWithMeta<ChatSingleRequest, ChatSingleResponse>(CHAT_SINGLE_GET);
 
@@ -38,5 +44,6 @@ export default {
     getChatSingleItem,
     receiveMessage,
     sendMessage,
+    sendPresence,
     typeMessage,
 };

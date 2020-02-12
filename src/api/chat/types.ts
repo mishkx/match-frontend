@@ -1,4 +1,4 @@
-import { FailureResponse, IdentifyType } from '../types';
+import { EmptyRequest, FailureResponse, IdentifyType } from '../types';
 import { UserItemPhoto } from '../user';
 
 export type ChatItem = {
@@ -6,6 +6,10 @@ export type ChatItem = {
     updatedAt: string;
     user: ChatUserItem;
     messages: ChatMessageItem[];
+}
+
+export type ChatItemReceived = ChatItem & {
+    messages: ChatMessageReceivedItem[];
 }
 
 export type ChatUserItem = {
@@ -31,7 +35,11 @@ export type ChatMessageSendingItem = {
     token: string;
 };
 
-export type ChatMessageCombined = ChatMessageItem | ChatMessageSendingItem;
+export type ChatMessageReceivedItem = ChatMessageItem & {
+    isReceived: boolean;
+};
+
+export type ChatMessageCombined = ChatMessageItem | ChatMessageReceivedItem | ChatMessageSendingItem;
 
 export type ChatCollectionRequest = {
     params?: {
@@ -47,6 +55,8 @@ export type ChatSingleRequest = IdentifyType & {
     };
 }
 
+export type ChatSingleResponse = ChatItem;
+
 export type ChatSendMessageRequest = IdentifyType & {
     data: {
         content: string;
@@ -59,4 +69,8 @@ export type ChatSendMessageResponse = ChatMessageItem & {
     token: string;
 };
 
-export type ChatSingleResponse = ChatItem;
+export type ChatSendPresenceRequest = IdentifyType & {
+    messageIds: number[];
+};
+
+export type ChatSendPresenceResponse = EmptyRequest;

@@ -1,10 +1,12 @@
-import { URL_CHAT, URL_CHAT_SEND_MESSAGE, URL_CHAT_SINGLE } from 'src/constants';
+import { URL_CHAT, URL_CHAT_SEND_MESSAGE, URL_CHAT_SEND_PRESENCE, URL_CHAT_SINGLE } from 'src/constants';
 import { getRequest, postRequest } from 'src/utils';
 import {
     ChatCollectionRequest,
     ChatCollectionResponse,
     ChatSendMessageRequest,
     ChatSendMessageResponse,
+    ChatSendPresenceRequest,
+    ChatSendPresenceResponse,
     ChatSingleRequest,
     ChatSingleResponse,
 } from './types';
@@ -23,6 +25,12 @@ export const sendMessage = (payload: ChatSendMessageRequest) => (
     })
 );
 
+export const sendPresence = (payload: ChatSendPresenceRequest) => (
+    postRequest<ChatSendPresenceResponse>({
+        url: URL_CHAT_SEND_PRESENCE(payload.id),
+    })
+);
+
 export const single = (payload: ChatSingleRequest) => (
     getRequest<ChatSingleResponse>({
         params: payload.params,
@@ -33,5 +41,6 @@ export const single = (payload: ChatSingleRequest) => (
 export default {
     collection,
     sendMessage,
+    sendPresence,
     single,
 };
