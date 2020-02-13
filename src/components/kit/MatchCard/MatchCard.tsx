@@ -1,7 +1,10 @@
 import { TFunction } from 'i18next';
 import React, { memo } from 'react';
+import { PATH_MATCHES_CHAT } from 'src/constants';
 import { Button, Result } from '../../common';
+import { BigNavButton } from '../index';
 import UserAvatar from '../UserAvatar';
+import { ButtonWrapper } from '../UserCard';
 import * as Styled from './styles';
 
 type MatchCardProps = {
@@ -30,12 +33,22 @@ export const MatchCard: React.FC<MatchCardProps> = ({ t, ...props }) => {
             />
         </Styled.AvatarsWrapper>
     );
+    const buttonsHtml = (
+        <ButtonWrapper>
+            <Button onClick={props.handleSkipMatch} children={t('Keep searching')}/>
+            <BigNavButton
+                handleClick={props.handleSkipMatch}
+                to={PATH_MATCHES_CHAT(props.matchedUserId)}
+                title={t('Contact')}
+            />
+        </ButtonWrapper>
+    );
     return (
         <Styled.Wrapper>
             <Result
                 title={t('It\'s a match!')}
                 subTitle={avatarsHtml}
-                extra={<Button onClick={props.handleSkipMatch} icon={'user'} children={t('Keep searching')}/>}
+                extra={buttonsHtml}
             />
         </Styled.Wrapper>
     );

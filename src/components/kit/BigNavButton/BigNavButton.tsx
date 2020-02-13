@@ -5,11 +5,12 @@ import { Button } from './styles'
 type BigNavButtonProps = {
     to: string;
     title: string;
+    handleClick?: () => void;
 }
 
-export const BigNavButton: React.FC<BigNavButtonProps> = ({ to, title }) => (
+export const BigNavButton: React.FC<BigNavButtonProps> = ({ handleClick, to, title }) => (
     <NavLink to={to}>
-        <Button>
+        <Button onClick={handleClick}>
             {title}
         </Button>
     </NavLink>
