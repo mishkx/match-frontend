@@ -1,7 +1,7 @@
 import { assign, omit, union, without } from 'lodash';
 import { normalize } from 'normalizr';
 import { createReducer } from '@reduxjs/toolkit';
-import { deleteRecommendation, getRecommendationCollection } from 'src/actions';
+import { deleteRecommendation, getRecommendationCollection, updateUser } from 'src/actions';
 import { RecommendedUserItem } from 'src/api';
 import { RECOMMENDATION_MIN_ITEMS } from 'src/constants';
 import { RecommendationSchema } from 'src/schemas';
@@ -37,5 +37,9 @@ export default createReducer(initialState, (builder) => builder
     .addCase(getRecommendationCollection.failure, (state, action) => {
         state.isFetching = false;
         state.error = action.payload;
+    })
+    .addCase(updateUser.success, (state) => {
+        state.entities.users = {};
+        state.result = [];
     }),
 );
